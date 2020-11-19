@@ -10,12 +10,33 @@ Disc: Python script to find a
 ***********************************
 '''
 
-from sys import exit
+
+from sys import exit, argv
 import time
 
-#builds matrix from Maze.txt
+
+''' Takes path to selected maze file as a command line argument '''
+if len(argv) < 2:
+	print('ERROR: This script takes a text file as an argument')  # check to ensure an argument is present
+	exit(-1)
+if len(argv) > 2:
+	print('ERROR: This script only takes one file as an argument')  # check to ensure only one argument is present
+	exit(-1)
+if not argv[1].endswith('.txt'):
+	print('ERROR: The selected file is an invalid type')  # check to ensure an argument is of a valid type (.txt)
+	exit(-1)
+maze = argv[1]
+
+
 def build_matrix():
-	m = open('SampleMaze.txt', 'r')
+	''' Builds matrix from user selected file '''
+
+	try:
+		m = open(maze, 'r')
+	except FileNotFoundError as e:
+		print('ERROR: The selected file could not be found')
+		exit(-1)
+
 	ma = m.read()
 	mat = ma.split('\n')
 	matr = []
@@ -27,16 +48,19 @@ def build_matrix():
 			matr[row][col] = int(matr[row][col])
 	return(matr)
 
+''' Data Structures '''
 matrix = build_matrix()
 visited = set()
 stack = []
 path = []
 
-#main method
+
 def main():
+	''' Main method '''
+
 	start = get_start()
 	if start:
-		result = open('result.txt', 'w')
+		result = open(maze[0:-4]+ '_Results.txt', 'w')
 		result.write('*NOTE: DEPTH FIRST SEARCH is an UNWEIGHTED search. The shortest path is NOT guarunteed*\n')
 		result.write(f'Start Node: {start}\n')
 		result.write('Generating Solution...\n')
@@ -72,8 +96,10 @@ def main():
 		result.write('ERROR: No Defined Start Node')
 		exit(-1)
 	
-#finds and returns shortest pat from start node to end node	
+	
 def dfs_path_find():
+	''' Finds and returns path from start node to end node '''
+
 	while stack != []:
 		current = stack.pop()
 		path.append(current)
@@ -86,8 +112,10 @@ def dfs_path_find():
 		while adj != []:
 			stack.append(adj.pop())		
 
-#returns start node
+
 def get_start():
+	''' Returns start node '''
+
 	start = None
 	for row in range(len(matrix)):
 		for col in range(len(matrix[row])):
@@ -100,41 +128,48 @@ def get_start():
 		return start
 	return None
 
-#returns list of valid & unvisited adjacent nodes in counter-clockwise order *Need to make it check for end node before return*
+
 def get_adj(pos):
+	''' Returns list of valid & unvisited adjacent nodes in counter-clockwise order '''
+
 	y, x = pos
 	adj = []
-	#up
+	# up
 	if y >= 1 and matrix[y-1][x] in {0, 3} and (y-1, x) not in visited:
 		adj.append((y-1, x))
-	#left
+	# left
 	if x >= 1 and matrix[y][x-1] in {0, 3} and (y, x-1) not in visited:
 		adj.append((y, x-1))
-	#right
+	# right
 	if x < len(matrix[0]) - 1 and matrix[y][x+1] in {0, 3} and (y, x+1) not in visited:
 		adj.append((y, x+1))
-	#down
+	# down
 	if y < len(matrix) - 1 and matrix[y+1][x] in {0, 3} and (y+1, x) not in visited:
 		adj.append((y+1, x))
 	
-
 	return adj
 
-#backtracks to last valid node
+
 def backtrack():
+	''' Backtracks to last valid node '''
+
 	while True:
 		if get_adj(path[len(path)-1]) == []:
-			path.remove(path[len(path)-1])
+			path.remove(path[len(path)-1])  # nonuseful nodes are removed from the path
 			if path == []:
 				print('ERROR: End Node Unreachable or Undefined')
 				exit(-1)
 		else:
 			break
 
-#checks to see if current node is end node
+
 def end_check(pos):
+	''' Checks to see if current node is end node '''
+
 	y, x = pos
 	if matrix[y][x] == 3:
 		return 1
 
-main()
+
+if __name__ == '__main__':
+	main()
