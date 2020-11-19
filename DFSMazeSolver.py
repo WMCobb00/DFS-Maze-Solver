@@ -15,7 +15,7 @@ import time
 
 #builds matrix from Maze.txt
 def build_matrix():
-	m = open('Maze.txt', 'r')
+	m = open('SampleMaze.txt', 'r')
 	ma = m.read()
 	mat = ma.split('\n')
 	matr = []
@@ -36,23 +36,24 @@ path = []
 def main():
 	start = get_start()
 	if start:
-		print('*NOTE: DEPTH FIRST SEARCH is an UNWEIGHTED search. The shortest path is NOT guarunteed*')
-		print(f'Start Node: {start}\n')
-		print('Generating Solution...\n')
+		result = open('result.txt', 'w')
+		result.write('*NOTE: DEPTH FIRST SEARCH is an UNWEIGHTED search. The shortest path is NOT guarunteed*\n')
+		result.write(f'Start Node: {start}\n')
+		result.write('Generating Solution...\n')
 		t1 = time.time()
 		stack.append(start)
 		dfs_path_find()
 		t2 = time.time()
-		print(f'End Node: {path[-1]}')
-		print(f'Path: {path}')
-		print(f'Solve time: {t2 - t1} sec')
-		print('Building visual...\n')
+		result.write(f'End Node: {path[-1]}\n')
+		result.write(f'Path: {path}\n')
+		result.write(f'Solve time: {t2 - t1} sec\n')
+		result.write('Building visual...\n\n')
 		for row in range(len(matrix)):
 			for col in range(len(matrix[row])):
 				matrix[row][col] = str(matrix[row][col])
 		for i in visited:
 			y, x = i
-			matrix[y][x] = ' '
+			matrix[y][x] = '  '
 		for i in path:
 			if i is path[0]:
 				y, x = i
@@ -63,12 +64,12 @@ def main():
 			elif i in path[1:len(path)-1]:
 				y, x = i
 				matrix[y][x] = '_'
-		print("KEY: s = Start Node, e = End Node, '_' = Successful Path, 0 = Unvisited Path Node, ' ' = Visited Path Node\n")
+		result.write("KEY: s = Start Node, e = End Node, '_' = Successful Path, 0 = Unvisited Path Node, ' ' = Visited Path Node\n")
 		for row in matrix:
-			print(row)
+			result.write(str(row)+ '\n')
 		exit(0)
 	else:
-		print('ERROR: No Defined Start Node')
+		result.write('ERROR: No Defined Start Node')
 		exit(-1)
 	
 #finds and returns shortest pat from start node to end node	
