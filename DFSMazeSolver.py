@@ -50,18 +50,22 @@ def build_matrix():
 	return(matr)
 
 ''' Data Structures '''
-matrix = build_matrix()
+try:
+	matrix = build_matrix()
+except ValueError as e:
+	print('Invalid maze format found in '+ maze.split('\\')[-1]+ '. For examples, please refer to the samples provided in the repository.')
+	exit(-1)
+
 visited = set()
 stack = []
 path = []
-
 
 def main():
 	''' Main method '''
 
 	start = get_start()
 	if start:
-		result = open(maze[0:-4]+ '_Results.txt', 'w')
+		result = open('.\\'+ maze.split('\\')[-1][:-4]+ '_Results.txt', 'w')
 		result.write('*NOTE: DEPTH FIRST SEARCH is an UNWEIGHTED search. The shortest path is NOT guarunteed*\n')
 		result.write(f'Start Node: {start}\n')
 		result.write('Generating Solution...\n')
@@ -150,22 +154,27 @@ def get_start():
 def get_adj(pos):
 	''' Returns list of valid & unvisited adjacent nodes in counter-clockwise order '''
 
-	y, x = pos
-	adj = []
-	# up
-	if y >= 1 and matrix[y-1][x] in {0, 3} and (y-1, x) not in visited:
-		adj.append((y-1, x))
-	# left
-	if x >= 1 and matrix[y][x-1] in {0, 3} and (y, x-1) not in visited:
-		adj.append((y, x-1))
-	# right
-	if x < len(matrix[0]) - 1 and matrix[y][x+1] in {0, 3} and (y, x+1) not in visited:
-		adj.append((y, x+1))
-	# down
-	if y < len(matrix) - 1 and matrix[y+1][x] in {0, 3} and (y+1, x) not in visited:
-		adj.append((y+1, x))
-	
-	return adj
+	try:
+		y, x = pos
+		adj = []
+		# up
+		if y >= 1 and matrix[y-1][x] in {0, 3} and (y-1, x) not in visited:
+			adj.append((y-1, x))
+		# left
+		if x >= 1 and matrix[y][x-1] in {0, 3} and (y, x-1) not in visited:
+			adj.append((y, x-1))
+		# right
+		if x < len(matrix[0]) - 1 and matrix[y][x+1] in {0, 3} and (y, x+1) not in visited:
+			adj.append((y, x+1))
+		# down
+		if y < len(matrix) - 1 and matrix[y+1][x] in {0, 3} and (y+1, x) not in visited:
+			adj.append((y+1, x))
+		
+		return adj
+
+	except IndexError as e:
+		print('Invalid maze format found in '+ maze.split('\\')[-1]+ '. For examples, please refer to the samples provided in the repository.')
+		exit(-1)
 
 
 def backtrack():

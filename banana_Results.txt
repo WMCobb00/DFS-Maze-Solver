@@ -1,0 +1,3 @@
+*NOTE: DEPTH FIRST SEARCH is an UNWEIGHTED search. The shortest path is NOT guarunteed*
+Start Node: (6, 3)
+Generating Solution...
