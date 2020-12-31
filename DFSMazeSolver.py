@@ -13,17 +13,18 @@ Disc: Python script to find a
 
 from sys import exit, argv
 import time
+import os
 
 
 ''' Takes path to selected maze file as a command line argument '''
 if len(argv) < 2:
-	print('ERROR: This script takes a text file as an argument')  # check to ensure an argument is present
+	print('ERROR: This script takes a text file as an argument | DFSMazeSolver.py <path/to/example.txt>')  # check to ensure an argument is present
 	exit(-1)
 if len(argv) > 2:
-	print('ERROR: This script only takes one file as an argument')  # check to ensure only one argument is present
+	print('ERROR: This script only takes one file as an argument | DFSMazeSolver.py <path/to/example.txt>')  # check to ensure only one argument is present
 	exit(-1)
 if not argv[1].endswith('.txt'):
-	print('ERROR: The selected file is an invalid type')  # check to ensure an argument is of a valid type (.txt)
+	print('ERROR: The selected file is an invalid type | DFSMazeSolver.py <path/to/example.txt>')  # check to ensure an argument is of a valid type (.txt)
 	exit(-1)
 maze = argv[1]
 
@@ -91,6 +92,8 @@ def main():
 		result.write("KEY: s = Start Node, e = End Node, '_' = Successful Path, 0 = Unvisited Path Node, ' ' = Visited Path Node\n")
 		for row in matrix:
 			result.write(str(row)+ '\n')
+		result.close()
+		os.rename(result.name, 'Results/'+ result.name)
 		exit(0)
 	else:
 		result.write('ERROR: No Defined Start Node')
