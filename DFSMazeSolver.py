@@ -24,7 +24,7 @@ if len(argv) > 2:
 	print('ERROR: This script only takes one file as an argument | DFSMazeSolver.py <path/to/example.txt>')  # check to ensure only one argument is present
 	exit(-1)
 if not argv[1].endswith('.txt'):
-	print('ERROR: The selected file is an invalid type | DFSMazeSolver.py <path/to/example.txt>')  # check to ensure an argument is of a valid type (.txt)
+	print('ERROR: The selected file is an invalid type, only .txt format is valid | DFSMazeSolver.py <path/to/example.txt>')  # check to ensure an argument is of a valid type (.txt)
 	exit(-1)
 maze = argv[1]
 
