@@ -93,7 +93,22 @@ def main():
 		for row in matrix:
 			result.write(str(row)+ '\n')
 		result.close()
-		os.rename(result.name, 'Results/'+ result.name)
+
+		# Checks for repeat file names in results folder and appends a sequential int value to the file name
+		current_loc = result.name.split('\\')[-1]  # ignores full path name as output file is located in script folder
+		new_loc = 'Results\\'+ current_loc
+		copy_new_loc = new_loc[:]
+		flag = True
+		out_file_itr = 1
+		while flag:
+			try:
+				os.rename(current_loc, copy_new_loc)
+				flag = False
+			except FileExistsError as e:
+				copy_new_loc = new_loc[:-4]+ str(out_file_itr)+ new_loc[-4:]
+				out_file_itr += 1
+
+		print(copy_new_loc[8:-4]+ ' placed in .\\Results')
 		exit(0)
 	else:
 		result.write('ERROR: No Defined Start Node')
