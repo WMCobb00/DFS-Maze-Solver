@@ -65,7 +65,7 @@ def main():
 
 	start = get_start()
 	if start:
-		result = open('.\\'+ maze.split('\\')[-1][:-4]+ '_Results.txt', 'w')
+		result = open('.\\'+ maze.split('\\')[-1][:-4]+ '_results.txt', 'w')
 		result.write('*NOTE: DEPTH FIRST SEARCH is an UNWEIGHTED search. The shortest path is NOT guarunteed*\n')
 		result.write(f'Start Node: {start}\n')
 		result.write('Generating Solution...\n')
